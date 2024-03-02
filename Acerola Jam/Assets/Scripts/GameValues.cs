@@ -9,6 +9,8 @@ public class GameValues : MonoBehaviour
     [Header("Areas")]
     public GameObject servingArea;
     public GameObject storageArea;
+    public GameObject counterArea;
+
 
     public Animator viewFade;
     public bool stopFade;
@@ -34,11 +36,19 @@ public class GameValues : MonoBehaviour
     public void SwitchViewsMain() {
         servingArea.SetActive(true);
         storageArea.SetActive(false);
+        counterArea.SetActive(false);
     }
     public void SwitchViewsStorage()
     {
         servingArea.SetActive(false);
         storageArea.SetActive(true);
+        counterArea.SetActive(false);
+    }
+    public void SwitchViewsCounter()
+    {
+        servingArea.SetActive(false);
+        storageArea.SetActive(false);
+        counterArea.SetActive(true);
     }
 
     public void StopFade() {

@@ -2,33 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StorageCounters : MonoBehaviour
+public class StorageCounters : MonoBehaviour, IKitchenObjectParent
 {
+
+
     public ItemScriptableObj kitchenObjectSO;
     public Transform counterPoint;
-    public StorageCounters secondStorageCounter;
-    public bool testing;
-
     private KitchenObj kitchenObject;
 
-    private void Update()
-    {
-        if (testing && Input.GetKeyDown(KeyCode.T)) {
-            if (kitchenObject != null) {
-                kitchenObject.SetStorageCounter(secondStorageCounter);
-            }
-        }
-    }
-
-    public void Interact() {
+    public void Interact(CustomCursor customCursor) {
         if (kitchenObject == null)
         {
             Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab, counterPoint);
-            kitchenObjectTransform.GetComponent<KitchenObj>().SetStorageCounter(this);
+            kitchenObjectTransform.GetComponent<KitchenObj>().SetKitchenObjectParent(this);
         }
         else {
             //kitchenObject.SetStorageCounter(customCursorPoint);
-            //Debug.Log(kitchenObject.GetStorageCounters());
+            kitchenObject.SetKitchenObjectParent(customCursor);
         }
     }
 

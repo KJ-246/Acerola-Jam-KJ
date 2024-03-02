@@ -6,29 +6,29 @@ public class KitchenObj : MonoBehaviour
 {
     public ItemScriptableObj kitchenObjectSO;
 
-    private StorageCounters storageCounters;
+    private IKitchenObjectParent kitchenObjectParent;
 
     public ItemScriptableObj GetItemScriptableObj() {
         return kitchenObjectSO;
     }
 
-    public void SetStorageCounter(StorageCounters storageCounter) {
-        if (this.storageCounters != null) {
-            this.storageCounters.ClearKitchenObject();
+    public void SetKitchenObjectParent(IKitchenObjectParent kitchenObjectParent) {
+        if (this.kitchenObjectParent != null) {
+            this.kitchenObjectParent.ClearKitchenObject();
         }
 
-        this.storageCounters = storageCounter;
+        this.kitchenObjectParent = kitchenObjectParent;
 
-        if (storageCounter.HasKitchenObj()) {
-            Debug.LogError("Counter already has a kitchen obj!!!!!!!!");
+        if (kitchenObjectParent.HasKitchenObj()) {
+            Debug.LogError("IKitchenObjectParent already has a kitchen obj!!!!!!!!");
         }
-        storageCounter.SetKitchenObj(this);
+        kitchenObjectParent.SetKitchenObj(this);
 
-        transform.parent = storageCounter.GetKitchenObjectFollowTransform();
+        transform.parent = kitchenObjectParent.GetKitchenObjectFollowTransform();
         transform.localPosition = Vector3.zero;
     }
 
-    public StorageCounters GetStorageCounters() {
-        return storageCounters;
+    public IKitchenObjectParent GetKitchenObjectParent() {
+        return kitchenObjectParent;
     }
 }
