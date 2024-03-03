@@ -8,4 +8,5 @@ public class ItemScriptableObj : ScriptableObject
     public string itemName;
     public Transform prefab;
     public Sprite itemSprite;
+    public BoxCollider2D boxCollider;
 }

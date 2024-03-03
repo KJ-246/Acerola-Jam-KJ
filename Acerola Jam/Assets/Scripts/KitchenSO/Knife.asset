@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f6acf53ed525c646acd0e82c54a0c88, type: 3}
-  m_Name: Meat
+  m_Name: Knife
   m_EditorClassIdentifier: 
-  itemName: Meat
-  prefab: {fileID: 1549530560151751626, guid: 8a39f5cf3adecca4582e9004f683c830, type: 3}
-  itemSprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  boxCollider: {fileID: 1549530560151751630, guid: 8a39f5cf3adecca4582e9004f683c830, type: 3}
+  itemName: Knife
+  prefab: {fileID: 5111802675532720547, guid: 4c2ba17e20ad5dc4e8661cf42e27a82a, type: 3}
+  itemSprite: {fileID: 0}
+  boxCollider: {fileID: 406248258962666176, guid: 4c2ba17e20ad5dc4e8661cf42e27a82a, type: 3}

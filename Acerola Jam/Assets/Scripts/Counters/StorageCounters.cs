@@ -11,14 +11,29 @@ public class StorageCounters : MonoBehaviour, IKitchenObjectParent
     private KitchenObj kitchenObject;
 
     public void Interact(CustomCursor customCursor) {
-        if (kitchenObject == null)
+        if (!HasKitchenObj())
         {
-            Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab, counterPoint);
-            kitchenObjectTransform.GetComponent<KitchenObj>().SetKitchenObjectParent(this);
+            //customCursor.GetKitchenObj().SetKitchenObjectParent(customCursor);
+            //There is no kitchen object here
+            if (customCursor.HasKitchenObj())
+            {
+                //Player is carrying something
+                customCursor.GetKitchenObj().SetKitchenObjectParent(this);
+            }
+            else { 
+                //Player not carrying anything
+            }
         }
         else {
-            //kitchenObject.SetStorageCounter(customCursorPoint);
-            kitchenObject.SetKitchenObjectParent(customCursor);
+            //There is a kitchen object here
+            if (customCursor.HasKitchenObj())
+            {
+                //player is carrying something
+            }
+            else {
+                //player isnt carrying anythign
+                GetKitchenObj().SetKitchenObjectParent(customCursor);
+            }
         }
     }
 
