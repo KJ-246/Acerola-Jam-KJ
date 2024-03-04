@@ -10,6 +10,7 @@ public class GameValues : MonoBehaviour
     public GameObject servingArea;
     public GameObject storageArea;
     public GameObject counterArea;
+    public GameObject stoveArea;
 
 
     public Animator viewFade;
@@ -33,10 +34,20 @@ public class GameValues : MonoBehaviour
     }
     //Everything is really bad please change it later
 
-    public void SwitchViewsMain() {
-        servingArea.SetActive(true);
+    //public void SwitchViews(GameObject areaToSwitchTo, GameObject area2, GameObject area3, GameObject area4, GameObject area5) {
+        //areaToSwitchTo.SetActive(true);
+        //area2.SetActive(false);
+        //area3.SetActive(false);
+        //area4.SetActive(false);
+        //area5.SetActive(false);
+    //}
+
+    public void SwitchViewsMain(GameObject areaToSwitchTo) {
+        servingArea.SetActive(false);
         storageArea.SetActive(false);
         counterArea.SetActive(false);
+        stoveArea.SetActive(false);
+        areaToSwitchTo.SetActive(true);
     }
     public void SwitchViewsStorage()
     {

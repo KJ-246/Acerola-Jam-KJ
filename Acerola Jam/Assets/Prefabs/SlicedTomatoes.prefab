@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673067274d4b1364fa9b121906809c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kitchenObjectSO: {fileID: 0}
+  kitchenObjectSO: {fileID: 11400000, guid: bf5f680a77cfeb0428ed4edc0dab5b3a, type: 2}
 --- !u!61 &3601861897246142765
 BoxCollider2D:
   m_ObjectHideFlags: 0

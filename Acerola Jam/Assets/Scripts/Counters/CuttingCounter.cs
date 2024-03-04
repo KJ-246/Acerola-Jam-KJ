@@ -1,10 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CuttingCounter : MonoBehaviour, IKitchenObjectParent
+public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
 {
+    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+    
+
     public CuttingRecipeSO[] cuttingRecipeSOArray;
+
+    private int cuttingProgress;
 
     //public ItemScriptableObj kitchenObjectSO;
     public ItemScriptableObj kitchenObjectSO;
@@ -19,8 +25,19 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent
             //There is no kitchen object here
             if (customCursor.HasKitchenObj())
             {
+                if (hasRecipeWithInput(customCursor.GetKitchenObj().GetKitchenObjectSO())) { 
+                    //Carrying something that can be cut!!
+                    customCursor.GetKitchenObj().SetKitchenObjectParent(this);
+                    cuttingProgress = 0;
+
+                    CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObj().GetKitchenObjectSO());
+
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
+                        progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax
+                    });
+                }
                 //Player is carrying something
-                customCursor.GetKitchenObj().SetKitchenObjectParent(this);
+                
             }
             else
             {
@@ -33,8 +50,8 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent
             if (customCursor.HasKitchenObj())
             {
                 //GetKitchenObj();
-                Debug.Log(customCursor.GetKitchenObj().kitchenObjectSO.itemName);
-                if (customCursor.GetKitchenObj().kitchenObjectSO.itemName == "Knife") {
+                //Debug.Log(customCursor.GetKitchenObj().kitchenObjectSO.itemName);
+                if (customCursor.GetKitchenObj().GetKitchenObjectSO().itemName == "Knife") {
                     Debug.Log("Has the item");
                     InteractAlternate();
                 }
@@ -49,19 +66,51 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent
     }
 
     public void InteractAlternate() {
-        if (HasKitchenObj()) {
+        if (HasKitchenObj() && hasRecipeWithInput(GetKitchenObj().GetKitchenObjectSO())) {
 
-            ItemScriptableObj outputKitchenObjectSO = GetOutputForInput(GetKitchenObj().GetKitchenObjectSO());
-            GetKitchenObj().DestroySelf();
+            //There is a kitchenObject here AND it can be cut 
+            cuttingProgress++;
 
-            KitchenObj.SpawnKitchenObject(outputKitchenObjectSO, this);
+            CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObj().GetKitchenObjectSO());
+
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+            {
+                progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax
+            });
+
+            if (cuttingProgress >= cuttingRecipeSO.cuttingProgressMax) { 
+                ItemScriptableObj outputKitchenObjectSO = GetOutputForInput(GetKitchenObj().GetKitchenObjectSO());
+
+                GetKitchenObj().DestroySelf();
+
+                KitchenObj.SpawnKitchenObject(outputKitchenObjectSO, this);
+            }
+            
         }
     }
 
+    private bool hasRecipeWithInput(ItemScriptableObj inputKitchenObjectSO) {
+        CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(inputKitchenObjectSO);
+        return cuttingRecipeSO != null;
+    }
+
     private ItemScriptableObj GetOutputForInput(ItemScriptableObj inputKitchenObjectSO) {
-        foreach (CuttingRecipeSO cuttingRecipeSO in cuttingRecipeSOArray) {
-            if (cuttingRecipeSO.input == inputKitchenObjectSO) {
-                return cuttingRecipeSO.output;
+        CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(inputKitchenObjectSO);
+        if (cuttingRecipeSO != null)
+        {
+            return cuttingRecipeSO.output;
+        }
+        else {
+            return null;
+        }
+    }
+
+    private CuttingRecipeSO GetCuttingRecipeSOWithInput(ItemScriptableObj inputKitchenObjectSO) {
+        foreach (CuttingRecipeSO cuttingRecipeSO in cuttingRecipeSOArray)
+        {
+            if (cuttingRecipeSO.input == inputKitchenObjectSO)
+            {
+                return cuttingRecipeSO;
             }
         }
         return null;
