@@ -49,10 +49,17 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
             //There is a kitchen object here
             if (customCursor.HasKitchenObj())
             {
-                //GetKitchenObj();
-                //Debug.Log(customCursor.GetKitchenObj().kitchenObjectSO.itemName);
+                if (customCursor.GetKitchenObj().TryGetPlate(out PlateKitchenObj plateKitchenObject))
+                {
+                    //Player is holding a plate
+                    if (plateKitchenObject.TryAddIngredient(GetKitchenObj().GetKitchenObjectSO()))
+                    {
+                        GetKitchenObj().DestroySelf();
+                    }
+                }
+
                 if (customCursor.GetKitchenObj().GetKitchenObjectSO().itemName == "Knife") {
-                    Debug.Log("Has the item");
+                    //Debug.Log("Has the item");
                     InteractAlternate();
                 }
                 //player is carrying something

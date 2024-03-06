@@ -124,7 +124,23 @@ public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
             //There is a kitchen object here
             if (customCursor.HasKitchenObj())
             {
-                //GetKitchenObj();
+                //Player is carrying something
+                if (customCursor.GetKitchenObj().TryGetPlate(out PlateKitchenObj plateKitchenObject))
+                {
+                    //Player is holding a plate
+                    if (plateKitchenObject.TryAddIngredient(GetKitchenObj().GetKitchenObjectSO()))
+                    {
+                        GetKitchenObj().DestroySelf();
+
+                        state = State.Idle;
+
+                        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                        {
+                            progressNormalized = 0f
+                        });
+                    }
+                }
+
             }
             else
             {

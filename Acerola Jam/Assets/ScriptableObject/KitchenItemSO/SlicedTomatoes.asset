@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f6acf53ed525c646acd0e82c54a0c88, type: 3}
-  m_Name: BurnedMeat
+  m_Name: SlicedTomatoes
   m_EditorClassIdentifier: 
-  itemName: Burned Meat
-  prefab: {fileID: 1237838915340560207, guid: a76d5199ccc45ab4199ca881063b8398, type: 3}
-  itemSprite: {fileID: 0}
-  boxCollider: {fileID: 1237838915340560203, guid: a76d5199ccc45ab4199ca881063b8398, type: 3}
+  itemName: Sliced Tomatoe
+  prefab: {fileID: 8326949239319185086, guid: 1cbe2ca4a295a4d4e8550d4c3da55e83, type: 3}
+  itemSprite: {fileID: 21300000, guid: 816da49f38634e74c9f83372b91fe5c0, type: 3}
+  boxCollider: {fileID: 3601861897246142765, guid: 1cbe2ca4a295a4d4e8550d4c3da55e83, type: 3}

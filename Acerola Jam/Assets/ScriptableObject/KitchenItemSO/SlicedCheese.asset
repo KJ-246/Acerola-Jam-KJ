@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f6acf53ed525c646acd0e82c54a0c88, type: 3}
-  m_Name: CookedMeat
+  m_Name: SlicedCheese
   m_EditorClassIdentifier: 
-  itemName: Cooked Meat
-  prefab: {fileID: 4796610060481440511, guid: 5886aa9287a76f24fac9e2fb3dc812e8, type: 3}
-  itemSprite: {fileID: 0}
-  boxCollider: {fileID: 4796610060481440507, guid: 5886aa9287a76f24fac9e2fb3dc812e8, type: 3}
+  itemName: Sliced Cheese
+  prefab: {fileID: 732393749759622717, guid: 1865bf0f2ff64224aa93faee7dd4efc0, type: 3}
+  itemSprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  boxCollider: {fileID: 2333357505091293751, guid: 1865bf0f2ff64224aa93faee7dd4efc0, type: 3}

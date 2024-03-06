@@ -42,6 +42,18 @@ public class KitchenObj : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public bool TryGetPlate(out PlateKitchenObj plateKitchenObject) {
+        if (this is PlateKitchenObj)
+        {
+            plateKitchenObject = this as PlateKitchenObj;
+            return true;
+        }
+        else {
+            plateKitchenObject = null;
+            return false;
+        }
+    }
+
 
 
     public static KitchenObj SpawnKitchenObject(ItemScriptableObj kitchenObjectSO, IKitchenObjectParent kitchenObjectParent) {

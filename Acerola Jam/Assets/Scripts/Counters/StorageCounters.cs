@@ -6,7 +6,7 @@ public class StorageCounters : MonoBehaviour, IKitchenObjectParent
 {
 
 
-    public ItemScriptableObj kitchenObjectSO;
+    //public ItemScriptableObj kitchenObjectSO;
     public Transform counterPoint;
     private KitchenObj kitchenObject;
 
@@ -29,6 +29,23 @@ public class StorageCounters : MonoBehaviour, IKitchenObjectParent
             if (customCursor.HasKitchenObj())
             {
                 //player is carrying something
+                if (customCursor.GetKitchenObj().TryGetPlate(out PlateKitchenObj plateKitchenObject))
+                {
+                    //Player is holding a plate
+                    if (plateKitchenObject.TryAddIngredient(GetKitchenObj().GetKitchenObjectSO()))
+                    {
+                        GetKitchenObj().DestroySelf();
+                    }
+                }
+                else {
+                    //Player is not carrying a plate but something else
+                    if (GetKitchenObj().TryGetPlate(out plateKitchenObject)) {
+                        //Counter is holding plate
+                        if (plateKitchenObject.TryAddIngredient(customCursor.GetKitchenObj().GetKitchenObjectSO())) {
+                            customCursor.GetKitchenObj().DestroySelf();
+                        }
+                    }
+                }
             }
             else {
                 //player isnt carrying anythign
