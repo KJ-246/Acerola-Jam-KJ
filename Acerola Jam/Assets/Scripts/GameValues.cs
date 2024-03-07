@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,59 +8,58 @@ using TMPro;
 public class GameValues : MonoBehaviour
 {
     [Header("Areas")]
-    public GameObject servingArea;
-    public GameObject storageArea;
-    public GameObject counterArea;
-    public GameObject stoveArea;
+    public List<GameObject> Areas;
+    private int currentMoney = 0;
+    private int payout = 0;
+    public TextMeshProUGUI moneyEarnedText;
 
 
     public Animator viewFade;
     public bool stopFade;
 
-    [Header("UI")]
-    public Image customCursor;
 
     private void Start()
     {
-        
+        DeliveryManager.Instance.OnRecipeCompleted += DeliveryManager_OnRecipeCompleted;
+        DeliveryManager.Instance.OnRecipeSpawned += DeliveryManager_OnRecipeSpawned;
 
         stopFade = false;
-        storageArea.SetActive(false);
-        servingArea.SetActive(true);
+    }
+
+    private void DeliveryManager_OnRecipeCompleted(object sender, EventArgs e) {
+        PayMoneyforCompletion();
+    }
+
+    private void DeliveryManager_OnRecipeSpawned(object sender, EventArgs e) {
+        UpdatePayout();
     }
 
     private void Update()
     {
         
     }
-    //Everything is really bad please change it later
-
-    //public void SwitchViews(GameObject areaToSwitchTo, GameObject area2, GameObject area3, GameObject area4, GameObject area5) {
-        //areaToSwitchTo.SetActive(true);
-        //area2.SetActive(false);
-        //area3.SetActive(false);
-        //area4.SetActive(false);
-        //area5.SetActive(false);
-    //}
-
-    public void SwitchViewsMain(GameObject areaToSwitchTo) {
-        servingArea.SetActive(false);
-        storageArea.SetActive(false);
-        counterArea.SetActive(false);
-        stoveArea.SetActive(false);
-        areaToSwitchTo.SetActive(true);
-    }
-    public void SwitchViewsStorage()
+    
+    public void SwitchViewsTest(GameObject areaToSwitchTo)
     {
-        servingArea.SetActive(false);
-        storageArea.SetActive(true);
-        counterArea.SetActive(false);
+        foreach (GameObject areas in Areas) {
+            if (areas == areaToSwitchTo) {
+                areaToSwitchTo.SetActive(true);
+                continue;
+            }
+            areas.SetActive(false);
+        }
     }
-    public void SwitchViewsCounter()
-    {
-        servingArea.SetActive(false);
-        storageArea.SetActive(false);
-        counterArea.SetActive(true);
+
+    public void UpdatePayout() {
+        foreach (RecipeSO recipeSO in DeliveryManager.Instance.GetWaitingRecipeSOList()) {
+            payout = recipeSO.cost;
+            moneyEarnedText.text = "Current Money: $" + currentMoney;
+        }
+    }
+
+    public void PayMoneyforCompletion() {
+        currentMoney += payout;
+        moneyEarnedText.text = "Current Money: $" + currentMoney;
     }
 
     public void StopFade() {

@@ -9,4 +9,6 @@ public class RecipeSO : ScriptableObject
     public List<ItemScriptableObj> kitchenObjectSOList;
     public string recipeName;
 
+    public int cost;
+
 }
