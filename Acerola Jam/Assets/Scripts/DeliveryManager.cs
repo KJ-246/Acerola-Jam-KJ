@@ -6,8 +6,13 @@ using UnityEngine;
 public class DeliveryManager : MonoBehaviour
 {
 
+    //public GameValues gameValues;
+    public bool stopSpawning = true;
+
     public event EventHandler OnRecipeSpawned;
     public event EventHandler OnRecipeCompleted;
+    public event EventHandler OnDayOver;
+
 
 
     public static DeliveryManager Instance { get; private set; }
@@ -18,7 +23,7 @@ public class DeliveryManager : MonoBehaviour
 
     private List<RecipeSO> waitingRecipeSOList;
     private float spawnRecipeTimer;
-    private float spawnRecipeTimerMax = 1f;
+    private float spawnRecipeTimerMax = 2f;
     private int waitingRecipesMax = 1;
 
     private void Awake()
@@ -27,13 +32,36 @@ public class DeliveryManager : MonoBehaviour
         waitingRecipeSOList = new List<RecipeSO>();
     }
 
+    private void Start()
+    {
+        stopSpawning = true;
+        GameValues.Instance.OnStateChanged += GameValues_OnStateChanged;
+    }
+
+    private void GameValues_OnStateChanged(object sender, EventArgs e)
+    {
+        if (GameValues.Instance.IsWaitingToStart() || GameValues.Instance.IsCountdownToStartActive() || GameValues.Instance.IsDayOver() || GameValues.Instance.IsGameOver())
+        {
+            stopSpawning = true;
+        }
+        else {
+            stopSpawning = false;
+        }
+
+        if (GameValues.Instance.IsDayOver()) {
+            waitingRecipeSOList.Clear();
+            spawnRecipeTimer = spawnRecipeTimerMax;
+            OnDayOver?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     private void Update()
     {
         spawnRecipeTimer -= Time.deltaTime;
         if (spawnRecipeTimer <= 0f) {
             spawnRecipeTimer = spawnRecipeTimerMax;
 
-            if (waitingRecipeSOList.Count < waitingRecipesMax) { 
+            if (waitingRecipeSOList.Count < waitingRecipesMax && !stopSpawning) { 
                 RecipeSO waitingRecipeSo = recipeListSO.recipeSOList[UnityEngine.Random.Range(0, recipeListSO.recipeSOList.Count)];
                 
                 waitingRecipeSOList.Add(waitingRecipeSo);
@@ -80,6 +108,7 @@ public class DeliveryManager : MonoBehaviour
                     waitingRecipeSOList.RemoveAt(i);
 
                     OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
+                    spawnRecipeTimer = spawnRecipeTimerMax;
                     return;
                 }
             }
