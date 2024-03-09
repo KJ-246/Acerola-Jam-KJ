@@ -5,28 +5,56 @@ using UnityEngine;
 
 public class SpawnNpcs : MonoBehaviour
 {
-    public List<GameObject> npcs;
+    [Header("List of Npc Aberrations over time")]
+    public List<GameObject> npcsDay1;
+    public List<GameObject> npcsDay2;
+    public List<GameObject> npcsDay3;
+    public List<GameObject> npcsDay4;
+    private List<GameObject> currentNpcs;
+
+ 
     public GameObject hoodedFigure;
     private bool spawnHoodedGuy;
     private GameObject spawnedNpcClone;
     public Animator npcAnimator;
 
-    private bool spawnStarterNpc = true;
-    //public GameValues gameValues;
 
     private void Start()
     {
         DeliveryManager.Instance.OnRecipeCompleted += DeliveryManager_OnRecipeCompleted;
         GameValues.Instance.OnStateChanged += GameValues_OnStateChanged;
 
-        
+        currentNpcs = npcsDay1;
+    }
+
+    //Use event instead
+    private void Update()
+    {
+        EvaluateDayNum();
+    }
+
+    public void EvaluateDayNum() {
+        switch (GameValues.Instance.DayNum)
+        {
+            case 1:
+                currentNpcs = npcsDay1;
+                break;
+            case 2:
+                currentNpcs = npcsDay2;
+                break;
+            case 3:
+                currentNpcs = npcsDay3;
+                break;
+            case 4:
+                currentNpcs = npcsDay4;
+                break;
+        }
     }
 
     private void GameValues_OnStateChanged(object sender, EventArgs e)
     {
         if (GameValues.Instance.IsDayOver()) {
             npcAnimator.SetTrigger("completedOrder");
-            spawnStarterNpc = true;
         }
 
         if (GameValues.Instance.IsWaitingToStart()) {
@@ -48,7 +76,7 @@ public class SpawnNpcs : MonoBehaviour
     public void spawnNpc() {
         if (!GameValues.Instance.isStopSpawning())
         {
-            GameObject spawnedNpc = npcs[UnityEngine.Random.Range(0, npcs.Count)];
+            GameObject spawnedNpc = currentNpcs[UnityEngine.Random.Range(0, currentNpcs.Count)];
 
             spawnedNpcClone = Instantiate(spawnedNpc, this.transform);
         }

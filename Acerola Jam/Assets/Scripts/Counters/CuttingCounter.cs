@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
 {
+
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
-    
+
+
+    public CuttingMinigame cuttingMinigame;
+    public static CuttingCounter Instance { get; private set; }
 
     public CuttingRecipeSO[] cuttingRecipeSOArray;
 
@@ -17,6 +21,11 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
     public Transform counterPoint;
     private KitchenObj kitchenObject;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     public void Interact(CustomCursor customCursor)
     {
         if (!HasKitchenObj())
@@ -25,8 +34,9 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
             //There is no kitchen object here
             if (customCursor.HasKitchenObj())
             {
-                if (hasRecipeWithInput(customCursor.GetKitchenObj().GetKitchenObjectSO())) { 
+                if (hasRecipeWithInput(customCursor.GetKitchenObj().GetKitchenObjectSO())) {
                     //Carrying something that can be cut!!
+                    cuttingMinigame.Show();
                     customCursor.GetKitchenObj().SetKitchenObjectParent(this);
                     cuttingProgress = 0;
 
@@ -47,6 +57,7 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
         else
         {
             //There is a kitchen object here
+            cuttingMinigame.Hide();
             if (customCursor.HasKitchenObj())
             {
                 if (customCursor.GetKitchenObj().TryGetPlate(out PlateKitchenObj plateKitchenObject))
@@ -60,7 +71,8 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
 
                 if (customCursor.GetKitchenObj().GetKitchenObjectSO().itemName == "Knife") {
                     //Debug.Log("Has the item");
-                    InteractAlternate();
+                    cuttingMinigame.SLICE();
+                    //InteractAlternate();
                 }
                 //player is carrying something
             }
@@ -75,24 +87,20 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
     public void InteractAlternate() {
         if (HasKitchenObj() && hasRecipeWithInput(GetKitchenObj().GetKitchenObjectSO())) {
 
-            //There is a kitchenObject here AND it can be cut 
-            cuttingProgress++;
-
             CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObj().GetKitchenObjectSO());
 
-            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+            if (cuttingMinigame.slicedCorrectValue == 1)
             {
-                progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax
-            });
-
-            if (cuttingProgress >= cuttingRecipeSO.cuttingProgressMax) { 
                 ItemScriptableObj outputKitchenObjectSO = GetOutputForInput(GetKitchenObj().GetKitchenObjectSO());
 
                 GetKitchenObj().DestroySelf();
 
                 KitchenObj.SpawnKitchenObject(outputKitchenObjectSO, this);
             }
-            
+            else if (cuttingMinigame.slicedCorrectValue == 2) {
+                GetKitchenObj().DestroySelf();
+            }
+
         }
     }
 

@@ -16,6 +16,7 @@ public class GameValues : MonoBehaviour
         CountDownToStart,
         GamePlaying,
         DayOver,
+        Intro,
         GameOver,
     }
 
@@ -23,10 +24,15 @@ public class GameValues : MonoBehaviour
     public List<GameObject> Areas;
     public List<Collider2D> AreaColliders;
 
+
+    [Header("UI stuff")]
+
     public int currentMoney = 0;
     public int goalMoney = 35;
     private int payout = 0;
     public TextMeshProUGUI moneyEarnedText;
+    public TextMeshProUGUI goalMoneyText;
+
 
     [Header("Day Cycle")]
     //public float dayTimer;
@@ -48,8 +54,8 @@ public class GameValues : MonoBehaviour
     private float countdownToStartTimer = 3f;
     public float countdownToStartTimerMax = 3f;
 
-    private float gamePlayingTimer;
-    public float gamePlayingTimerMax = 20f;
+    public float gamePlayingTimer;
+    public float gamePlayingTimerMax = 120f;
 
     private float gameOverTimer = 5f;
     public float gameOverTimerMax = 5f;
@@ -63,6 +69,10 @@ public class GameValues : MonoBehaviour
 
     private void Start()
     {
+        DayNum = 1;
+
+        goalMoneyText.text = ("Goal: $ " + goalMoney);
+
         DeliveryManager.Instance.OnRecipeCompleted += DeliveryManager_OnRecipeCompleted;
         DeliveryManager.Instance.OnRecipeSpawned += DeliveryManager_OnRecipeSpawned;
 
@@ -110,6 +120,10 @@ public class GameValues : MonoBehaviour
                 //DisableInteractions();
                 gameOverTimer -= Time.deltaTime;
                 stopSpawning = true;
+                if (DayNum == 1) {
+                    state = State.Intro;
+                    OnStateChanged?.Invoke(this, EventArgs.Empty);
+                }
                 //DayNum++;
                 if (gameOverTimer < 0f)
                 {
@@ -117,6 +131,7 @@ public class GameValues : MonoBehaviour
 
                     if (currentMoney < goalMoney)
                     {
+                        
                         state = State.GameOver;
                         OnStateChanged?.Invoke(this, EventArgs.Empty);
                     }
@@ -125,9 +140,13 @@ public class GameValues : MonoBehaviour
                         DayNum++;
                         ResetTimers();
                         state = State.WaitingToStart;
+                        goalMoneyText.text = ("Goal: $ " + goalMoney);
                         OnStateChanged?.Invoke(this, EventArgs.Empty);
                     }
                 }
+                break;
+            case State.Intro:
+                //OnStateChanged?.Invoke(this, EventArgs.Empty);
                 break;
             case State.GameOver:
                 Debug.Log("You lost");
@@ -152,6 +171,11 @@ public class GameValues : MonoBehaviour
     public bool IsDayOver()
     {
         return state == State.DayOver;
+    }
+
+    public bool IsIntro()
+    {
+        return state == State.Intro;
     }
 
     public bool IsGameOver() {
