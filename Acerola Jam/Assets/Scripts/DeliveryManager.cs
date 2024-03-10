@@ -40,7 +40,7 @@ public class DeliveryManager : MonoBehaviour
 
     private void GameValues_OnStateChanged(object sender, EventArgs e)
     {
-        if (GameValues.Instance.IsWaitingToStart() || GameValues.Instance.IsCountdownToStartActive() || GameValues.Instance.IsDayOver() || GameValues.Instance.IsGameOver() || GameValues.Instance.IsIntro())
+        if (GameValues.Instance.IsWaitingToStart() || GameValues.Instance.IsCountdownToStartActive() || GameValues.Instance.IsDayOver() || GameValues.Instance.IsGameOver() || GameValues.Instance.IsIntro() || GameValues.Instance.isBuyingPhase())
         {
             stopSpawning = true;
         }

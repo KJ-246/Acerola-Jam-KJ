@@ -53,7 +53,7 @@ public class SpawnNpcs : MonoBehaviour
 
     private void GameValues_OnStateChanged(object sender, EventArgs e)
     {
-        if (GameValues.Instance.IsDayOver()) {
+        if (GameValues.Instance.IsDayOver() || GameValues.Instance.isBuyingPhase()) {
             npcAnimator.SetTrigger("completedOrder");
         }
 
@@ -81,8 +81,10 @@ public class SpawnNpcs : MonoBehaviour
             spawnedNpcClone = Instantiate(spawnedNpc, this.transform);
         }
         else {
-            spawnHoodedFigure();
-            spawnedNpcClone = Instantiate(hoodedFigure, this.transform);
+            if (!GameValues.Instance.isBuyingPhase()) { 
+                spawnHoodedFigure();
+                spawnedNpcClone = Instantiate(hoodedFigure, this.transform);
+            }
         }
     }
 
