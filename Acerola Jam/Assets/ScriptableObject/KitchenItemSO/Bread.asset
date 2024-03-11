@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Bread
   prefab: {fileID: 3840488479007650480, guid: bfd54638d79767245bebb5d526eb1b6e, type: 3}
-  itemSprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  itemSprite: {fileID: 21300000, guid: 4ce20e6defa3f00499bec98c332f6905, type: 3}
   boxCollider: {fileID: 3840488479007650492, guid: bfd54638d79767245bebb5d526eb1b6e, type: 3}

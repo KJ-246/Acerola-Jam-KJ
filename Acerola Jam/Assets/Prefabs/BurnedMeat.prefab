@@ -16,16 +16,20 @@ PrefabInstance:
       value: BurnedMeat
       objectReference: {fileID: 0}
     - target: {fileID: 4796610060481440510, guid: 5886aa9287a76f24fac9e2fb3dc812e8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 97f6b0f7273e6f547aaabdc5e507ed47, type: 3}
+    - target: {fileID: 4796610060481440510, guid: 5886aa9287a76f24fac9e2fb3dc812e8, type: 3}
       propertyPath: m_Color.b
-      value: 0.032974374
+      value: 0.46226418
       objectReference: {fileID: 0}
     - target: {fileID: 4796610060481440510, guid: 5886aa9287a76f24fac9e2fb3dc812e8, type: 3}
       propertyPath: m_Color.g
-      value: 0.08069397
+      value: 0.46226418
       objectReference: {fileID: 0}
     - target: {fileID: 4796610060481440510, guid: 5886aa9287a76f24fac9e2fb3dc812e8, type: 3}
       propertyPath: m_Color.r
-      value: 0.1792453
+      value: 0.46226418
       objectReference: {fileID: 0}
     - target: {fileID: 4796610060481440511, guid: 5886aa9287a76f24fac9e2fb3dc812e8, type: 3}
       propertyPath: m_RootOrder

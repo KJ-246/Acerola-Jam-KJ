@@ -179,8 +179,13 @@ public class GameValues : MonoBehaviour
                     goalMoneyText.text = ("Goal: $ " + goalMoney);
                     moneyEarnedText.text = "Current Money: $" + currentMoney;
                     //SurplusMoney();
-                    state = State.BuyingPhase;
+
+                    //REMOVED FOR TESTING UNREMOVE THIS LATER
+
+                    state = State.WaitingToStart;
                     OnStateChanged?.Invoke(this, EventArgs.Empty);
+                    //state = State.BuyingPhase;
+                    //OnStateChanged?.Invoke(this, EventArgs.Empty);
                 }
                 break;
             case State.BuyingPhase:

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Sliced Cheese
   prefab: {fileID: 732393749759622717, guid: 1865bf0f2ff64224aa93faee7dd4efc0, type: 3}
-  itemSprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  itemSprite: {fileID: 21300000, guid: 0eb66ad2a3cab424bb565918559c5461, type: 3}
   boxCollider: {fileID: 2333357505091293751, guid: 1865bf0f2ff64224aa93faee7dd4efc0, type: 3}
