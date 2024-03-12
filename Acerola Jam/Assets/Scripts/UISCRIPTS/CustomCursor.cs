@@ -6,7 +6,12 @@ public class CustomCursor : MonoBehaviour, IKitchenObjectParent
 {
 
     private KitchenObj kitchenObject;
+
+    private KitchenObj objectBeingHeld;
+
     public Transform kitchenObjectHoldPoint;
+
+    public CustomCursor customCursor;
 
     private void Awake()
     {
@@ -15,6 +20,14 @@ public class CustomCursor : MonoBehaviour, IKitchenObjectParent
 
     private void Update()
     {
+        //if (customCursor.HasKitchenObj()) {
+            //objectBeingHeld = customCursor.GetKitchenObj();
+
+            //if (!customCursor.GetKitchenObj().TryGetPlate(out PlateKitchenObj plateKitchenObject)) { 
+                //objectBeingHeld.spriteRenderer.sortingOrder = 30;
+            //}
+        //}
+
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 

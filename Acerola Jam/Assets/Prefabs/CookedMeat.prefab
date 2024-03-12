@@ -8,6 +8,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -977748283406415911, guid: 8a39f5cf3adecca4582e9004f683c830, type: 3}
+      propertyPath: spriteRenderer
+      value: 
+      objectReference: {fileID: 4796610060481440510}
+    - target: {fileID: -977748283406415911, guid: 8a39f5cf3adecca4582e9004f683c830, type: 3}
       propertyPath: kitchenObjectSO
       value: 
       objectReference: {fileID: 11400000, guid: 9310af2828d3a8e42a6c834a4a85b545, type: 2}
@@ -75,5 +79,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1549530560151751627, guid: 8a39f5cf3adecca4582e9004f683c830, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a39f5cf3adecca4582e9004f683c830, type: 3}
+--- !u!212 &4796610060481440510 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1549530560151751627, guid: 8a39f5cf3adecca4582e9004f683c830, type: 3}
+  m_PrefabInstance: {fileID: 6274062636908454197}
+  m_PrefabAsset: {fileID: 0}

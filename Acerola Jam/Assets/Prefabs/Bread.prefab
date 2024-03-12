@@ -125,3 +125,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kitchenObjectSO: {fileID: 11400000, guid: 216014f2b84b0784c8a443f89e80bcaf, type: 2}
+  spriteRenderer: {fileID: 3840488479007650495}

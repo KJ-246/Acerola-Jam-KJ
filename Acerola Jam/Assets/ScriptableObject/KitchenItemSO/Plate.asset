@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Plate
   m_EditorClassIdentifier: 
   itemName: Plate
-  prefab: {fileID: 6962259910277864761, guid: 7bb676d079bf03d44a454d747de7ef07, type: 3}
-  itemSprite: {fileID: 0}
+  prefab: {fileID: 4201990436572778180, guid: 35d1ae793b69b904795773036d0bd85c, type: 3}
+  itemSprite: {fileID: 21300000, guid: c4746387f4d99a34495a2095e44deef5, type: 3}
   boxCollider: {fileID: 5583292396594640684, guid: 7bb676d079bf03d44a454d747de7ef07, type: 3}

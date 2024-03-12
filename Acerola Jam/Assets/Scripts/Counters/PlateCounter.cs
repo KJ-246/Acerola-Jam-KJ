@@ -13,7 +13,7 @@ public class PlateCounter : MonoBehaviour, IKitchenObjectParent
     public Transform counterPoint;
     private KitchenObj kitchenObject;
     private int platesSpawnedAmount;
-    private int platesSpawnedAmountMax = 4;
+    private int platesSpawnedAmountMax = 1;
 
 
     private float spawnPlateTimerMax = 4f;
@@ -24,7 +24,7 @@ public class PlateCounter : MonoBehaviour, IKitchenObjectParent
         spawnPlateTimer += Time.deltaTime;
 
         if (spawnPlateTimer > spawnPlateTimerMax) {
-            //KitchenObj.SpawnKitchenObject(plateKitchenObjectSO, this);
+
             spawnPlateTimer = 0f;
 
             if (platesSpawnedAmount < platesSpawnedAmountMax)

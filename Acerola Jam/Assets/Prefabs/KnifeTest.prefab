@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kitchenObjectSO: {fileID: 11400000, guid: bbc14d58c5a6f5e478073434c65e4caf, type: 2}
+  spriteRenderer: {fileID: 5932257351645218178}
 --- !u!61 &406248258962666176
 BoxCollider2D:
   m_ObjectHideFlags: 0

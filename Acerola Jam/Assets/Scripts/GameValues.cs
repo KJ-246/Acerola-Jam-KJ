@@ -54,6 +54,15 @@ public class GameValues : MonoBehaviour
 
     public Animator viewFade;
     public bool stopFade;
+    private GameObject gameObjectToSwitchTo;
+    public GameObject stoveArea;
+    private float betweenFadeTimermax = 1f;
+    private float betweenFadeTimer;
+    private bool startFadeTimer;
+    public Transform cameraStovePosition;
+    public Transform defaultCameraPosition;
+
+    public GameObject cam;
 
     private State state;
     private bool introOver;
@@ -199,6 +208,36 @@ public class GameValues : MonoBehaviour
                 Debug.Log("You lost");
                 break;
         }
+
+        switch (DayNum) {
+            case 1:
+                goalMoney = 0;
+                goalMoneyText.enabled = false;
+                break;
+            case 2:
+                goalMoneyText.enabled = true;
+                goalMoney = 25;
+                break;
+            case 3:
+                goalMoney = 40;
+                break;
+            case 4:
+                goalMoney = 50;
+                break;
+            case 5:
+                goalMoney = 60;
+                break;
+        }
+
+        if (startFadeTimer) {
+            betweenFadeTimer -= Time.deltaTime;
+            stopFade = true;
+            if (betweenFadeTimer <= 0) {
+                startFadeTimer = false;
+                stopFade = false;
+            }
+        }
+
         //Debug.Log(state);
     }
 
@@ -246,15 +285,36 @@ public class GameValues : MonoBehaviour
         return 1- (gamePlayingTimer / gamePlayingTimerMax);
     }
 
-    public void SwitchViewsTest(GameObject areaToSwitchTo)
-    {
+    public void SwitchAfterFade() { 
         foreach (GameObject areas in Areas) {
-            if (areas == areaToSwitchTo) {
-                areaToSwitchTo.SetActive(true);
+
+            if (gameObjectToSwitchTo == stoveArea)
+            {
+                cam.transform.position = cameraStovePosition.transform.position;
+            }
+            else {
+                cam.transform.position = defaultCameraPosition.transform.position;
+            }
+            if (areas == gameObjectToSwitchTo) {
+                gameObjectToSwitchTo.SetActive(true);
                 continue;
             }
-            areas.SetActive(false);
+            if (areas != stoveArea) { 
+                areas.SetActive(false);
+            }
+            
         }
+    }
+
+    public void SwitchViewsTest(GameObject areaToSwitchTo)
+    {
+        if (areaToSwitchTo != gameObjectToSwitchTo && !stopFade) { 
+            Fade();
+            startFadeTimer = true;
+            betweenFadeTimer = betweenFadeTimermax;
+            gameObjectToSwitchTo = areaToSwitchTo;
+        }
+        
     }
 
     public void SurplusMoney() {
@@ -296,6 +356,10 @@ public class GameValues : MonoBehaviour
     public void PayMoneyforCompletion() {
         currentMoney += payout;
         moneyEarnedText.text = "Current Money: $" + currentMoney;
+    }
+
+    public void Fade() {
+        viewFade.SetTrigger("isTransitioning");
     }
 
     public void StopFade() {

@@ -8,10 +8,11 @@ public class KitchenObj : MonoBehaviour
 
     private IKitchenObjectParent kitchenObjectParent;
 
-    //public ItemScriptableObj GetItemScriptableObj() {
-        //return kitchenObjectSO;
-    //}
+    public SpriteRenderer spriteRenderer;
 
+    //public ItemScriptableObj GetItemScriptableObj() {
+    //return kitchenObjectSO;
+    //}
     public void SetKitchenObjectParent(IKitchenObjectParent kitchenObjectParent) {
         if (this.kitchenObjectParent != null) {
             this.kitchenObjectParent.ClearKitchenObject();

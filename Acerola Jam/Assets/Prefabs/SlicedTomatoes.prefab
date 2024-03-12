@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 7264735559511245531}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 13, y: 13, z: 13}
+  m_LocalScale: {x: 10, y: 10, z: 13}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kitchenObjectSO: {fileID: 11400000, guid: bf5f680a77cfeb0428ed4edc0dab5b3a, type: 2}
+  spriteRenderer: {fileID: 8672006203932222904}
 --- !u!61 &3601861897246142765
 BoxCollider2D:
   m_ObjectHideFlags: 0

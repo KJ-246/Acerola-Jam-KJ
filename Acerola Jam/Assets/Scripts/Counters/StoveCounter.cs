@@ -22,6 +22,7 @@ public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
 
     public Transform counterPoint;
     private KitchenObj kitchenObject;
+    private GameObject parent;
 
 
     private State state;
@@ -111,7 +112,8 @@ public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
                     fryingTimer = 0f;
 
 
-                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs { 
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+                    {
                         progressNormalized = fryingTimer / fryingRecipeSO.fryingTimerMax
                     });
 
