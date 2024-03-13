@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using FMOD.Studio;
 
 public class GameValues : MonoBehaviour
 {
@@ -73,14 +74,18 @@ public class GameValues : MonoBehaviour
     private float waitingToStartTimer = 1f;
     public float waitingToStartTimerMax = 1f;
 
-    private float countdownToStartTimer = 3f;
-    public float countdownToStartTimerMax = 3f;
+    private float countdownToStartTimer = 10f;
+    public float countdownToStartTimerMax = 10f;
 
     public float gamePlayingTimer;
     public float gamePlayingTimerMax = 120f;
 
     private float gameOverTimer = 5f;
     public float gameOverTimerMax = 5f;
+
+    //AUDIO STUFF
+    private EventInstance music;
+    private float parameterValue;
 
 
     private void Awake()
@@ -91,6 +96,8 @@ public class GameValues : MonoBehaviour
 
     private void Start()
     {
+        music = AudioManager.instance.CreateInstance(FmodEvents.instance.music);
+
         giveSurplusMoney = true;
         boughtMoreStorage = false;
         moreStorageObjects.SetActive(false);
@@ -120,6 +127,16 @@ public class GameValues : MonoBehaviour
 
     private void Update()
     {
+        if (gamePlayingTimer <= 10 && state == State.GamePlaying)
+        {
+            parameterValue += Time.deltaTime;
+        }
+        else {
+            parameterValue = 0;
+        }
+
+        UpdateSound();
+
         switch (state) {
             case State.WaitingToStart:
                 //mainUI.SetActive(true);
@@ -127,6 +144,7 @@ public class GameValues : MonoBehaviour
                 Shop.SetActive(false);
                 SurplusMoneyText.enabled = false;
                 waitingToStartTimer -= Time.deltaTime;
+                goalMoneyText.text = ("Goal: $ " + goalMoney);
                 if (waitingToStartTimer < 0f) {
                     state = State.CountDownToStart;
                     OnStateChanged?.Invoke(this, EventArgs.Empty);
@@ -175,6 +193,8 @@ public class GameValues : MonoBehaviour
                         DayNum++;
                         ResetTimers();
                         state = State.WaitingToStart;
+                        currentMoney = 0;
+                        moneyEarnedText.text = "Current Money: $" + currentMoney;
                         goalMoneyText.text = ("Goal: $ " + goalMoney);
                         OnStateChanged?.Invoke(this, EventArgs.Empty);
                     }
@@ -186,6 +206,7 @@ public class GameValues : MonoBehaviour
                     DayNum++;
                     ResetTimers();
                     goalMoneyText.text = ("Goal: $ " + goalMoney);
+                    currentMoney = 0;
                     moneyEarnedText.text = "Current Money: $" + currentMoney;
                     //SurplusMoney();
 
@@ -360,6 +381,7 @@ public class GameValues : MonoBehaviour
 
     public void Fade() {
         viewFade.SetTrigger("isTransitioning");
+        AudioManager.instance.PlayOneShot(FmodEvents.instance.swoosh);
     }
 
     public void StopFade() {
@@ -395,4 +417,21 @@ public class GameValues : MonoBehaviour
         OnStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    private void UpdateSound() {
+        if (state == State.GamePlaying)
+        {
+            music.setParameterByName("DayAlmostOver", parameterValue);
+
+            PLAYBACK_STATE playbackState;
+            music.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                music.start();
+            }
+        }
+        else {
+            music.stop(STOP_MODE.ALLOWFADEOUT);
+        }
+
+    }
 }

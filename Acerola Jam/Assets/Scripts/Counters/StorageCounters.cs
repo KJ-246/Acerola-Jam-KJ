@@ -18,6 +18,7 @@ public class StorageCounters : MonoBehaviour, IKitchenObjectParent
             if (customCursor.HasKitchenObj())
             {
                 //Player is carrying something
+                AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
                 customCursor.GetKitchenObj().SetKitchenObjectParent(this);
             }
             else { 
@@ -49,6 +50,7 @@ public class StorageCounters : MonoBehaviour, IKitchenObjectParent
             }
             else {
                 //player isnt carrying anythign
+                AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
                 GetKitchenObj().SetKitchenObjectParent(customCursor);
             }
         }

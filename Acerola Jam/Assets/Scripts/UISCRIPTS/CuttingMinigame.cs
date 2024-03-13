@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class CuttingMinigame : MonoBehaviour
 {
+    public event EventHandler OnSuccesfulCut;
+
     public CuttingCounter cuttingCounter;
 
     public float cuttingLengthTimer;
@@ -68,14 +70,18 @@ public class CuttingMinigame : MonoBehaviour
         if (slicedVal > goalValueMin && slicedVal < GoalValueMax)
         {
             //Debug.Log("You sliced the correct value: " + slicedVal);
+            AudioManager.instance.PlayOneShot(FmodEvents.instance.sliceSfx);
+            AudioManager.instance.PlayOneShot(FmodEvents.instance.splatSfx);
             slicedCorrectValue = 1;
             stopMoving = false;
             cuttingCounter.InteractAlternate();
+            OnSuccesfulCut?.Invoke(this, EventArgs.Empty);
             SlicesReset();
         }
         else
         {
             //Debug.Log("You sliced the wrong value: " + slicedVal);
+            AudioManager.instance.PlayOneShot(FmodEvents.instance.wrong);
             stopMoving = false;
             slicedCorrectValue = 2;
             cuttingCounter.InteractAlternate();

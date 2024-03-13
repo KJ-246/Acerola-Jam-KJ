@@ -18,6 +18,7 @@ public class ContainerCounter : MonoBehaviour, IKitchenObjectParent
         {
             //isnt holding an object
             KitchenObj.SpawnKitchenObject(kitchenObjectSO, customCursor);
+            AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
             OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
         }
         

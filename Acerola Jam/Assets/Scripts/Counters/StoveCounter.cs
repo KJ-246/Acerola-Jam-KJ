@@ -104,6 +104,7 @@ public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
                 if (hasRecipeWithInput(customCursor.GetKitchenObj().GetKitchenObjectSO()))
                 {
                     //Carrying something that can be FRIED!!
+                    AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
                     customCursor.GetKitchenObj().SetKitchenObjectParent(this);
 
                     fryingRecipeSO = GetFryingRecipeSOWithInput(GetKitchenObj().GetKitchenObjectSO());
@@ -148,6 +149,7 @@ public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
             {
                 //player isnt carrying anythign
                 GetKitchenObj().SetKitchenObjectParent(customCursor);
+                AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
 
                 state = State.Idle;
 

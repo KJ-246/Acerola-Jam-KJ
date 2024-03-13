@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class DeliveryManager : MonoBehaviour
 {
-
     //public GameValues gameValues;
     public bool stopSpawning = true;
 
@@ -107,6 +106,9 @@ public class DeliveryManager : MonoBehaviour
                     
                     waitingRecipeSOList.RemoveAt(i);
 
+                    AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
+                    AudioManager.instance.PlayOneShot(FmodEvents.instance.kahChing);
+
                     OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
                     spawnRecipeTimer = spawnRecipeTimerMax;
                     return;
@@ -115,6 +117,7 @@ public class DeliveryManager : MonoBehaviour
         }
         //No matches found
         //Player did not deliver correct recipe
+        AudioManager.instance.PlayOneShot(FmodEvents.instance.wrong);
     }
 
     public List<RecipeSO> GetWaitingRecipeSOList() {

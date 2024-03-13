@@ -8,9 +8,7 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
 
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
 
-
     public CuttingMinigame cuttingMinigame;
-    public static CuttingCounter Instance { get; private set; }
 
     public CuttingRecipeSO[] cuttingRecipeSOArray;
 
@@ -20,11 +18,6 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
     public ItemScriptableObj kitchenObjectSO;
     public Transform counterPoint;
     private KitchenObj kitchenObject;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     public void Interact(CustomCursor customCursor)
     {
@@ -37,6 +30,7 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
                 if (hasRecipeWithInput(customCursor.GetKitchenObj().GetKitchenObjectSO())) {
                     //Carrying something that can be cut!!
                     cuttingMinigame.Show();
+                    AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
                     customCursor.GetKitchenObj().SetKitchenObjectParent(this);
                     cuttingProgress = 0;
 
@@ -80,6 +74,7 @@ public class CuttingCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
             {
                 //player isnt carrying anythign
                 GetKitchenObj().SetKitchenObjectParent(customCursor);
+                AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
             }
         }
     }

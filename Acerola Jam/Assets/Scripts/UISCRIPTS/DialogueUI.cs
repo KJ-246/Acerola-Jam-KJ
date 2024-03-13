@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class DialogueUI : MonoBehaviour
 {
+    private bool playtalkingSoundAtStart;
 
-    
     private float waitTimer = 4f;
     public bool wait;
 
@@ -20,6 +20,8 @@ public class DialogueUI : MonoBehaviour
 
     private void Start()
     {
+        playtalkingSoundAtStart = true;
+        
         ResetDialogue();
         dialogue = 1;
 
@@ -39,9 +41,15 @@ public class DialogueUI : MonoBehaviour
             wait = false;
         }
 
+        if (!wait && playtalkingSoundAtStart && GameValues.Instance.IsIntro()) {
+            AudioManager.instance.PlayOneShot(FmodEvents.instance.hoodedFigureTalking);
+            playtalkingSoundAtStart = false;
+        }
+
         //timeBetweenDialogueBubbles <= 0
         if (Input.GetKeyDown(KeyCode.Space) && dialogue != 7 && !wait) {
             dialogue++;
+            AudioManager.instance.PlayOneShot(FmodEvents.instance.hoodedFigureTalking);
             ResetDialogue();
         }
 

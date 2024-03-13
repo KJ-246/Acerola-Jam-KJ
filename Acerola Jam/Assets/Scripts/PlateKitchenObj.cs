@@ -32,6 +32,7 @@ public class PlateKitchenObj : KitchenObj
         //}
         else { 
             kitchenObjectSOList.Add(kitchenObjectSO);
+            AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
 
             OnIngredientAdded?.Invoke(this, new OnIngredientAddedEventArgs { 
                 kitchenObjectSO = kitchenObjectSO

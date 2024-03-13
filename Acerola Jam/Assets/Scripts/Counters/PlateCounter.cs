@@ -46,6 +46,8 @@ public class PlateCounter : MonoBehaviour, IKitchenObjectParent
                 platesSpawnedAmount--;
 
                 KitchenObj.SpawnKitchenObject(plateKitchenObjectSO, customCursor);
+                AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
+
 
                 OnPlateRemoved?.Invoke(this, EventArgs.Empty);
             }

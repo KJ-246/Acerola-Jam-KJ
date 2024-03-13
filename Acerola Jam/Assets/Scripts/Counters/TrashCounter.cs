@@ -7,6 +7,7 @@ public class TrashCounter : MonoBehaviour, IKitchenObjectParent
     //public ItemScriptableObj kitchenObjectSO;
     public Transform counterPoint;
     private KitchenObj kitchenObject;
+    public Animator trashCanAnimator;
 
     public void Interact(CustomCursor customCursor)
     {
@@ -14,6 +15,8 @@ public class TrashCounter : MonoBehaviour, IKitchenObjectParent
         {
             //is holding object Object
             customCursor.GetKitchenObj().DestroySelf();
+            trashCanAnimator.SetTrigger("Interaction");
+            AudioManager.instance.PlayOneShot(FmodEvents.instance.thudSfx);
         }
 
     }
