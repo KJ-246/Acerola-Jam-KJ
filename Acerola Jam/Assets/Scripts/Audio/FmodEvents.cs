@@ -12,6 +12,9 @@ public class FmodEvents : MonoBehaviour
     [field: SerializeField] public EventReference kahChing { get; private set; }
     [field: SerializeField] public EventReference wrong { get; private set; }
     [field: SerializeField] public EventReference hoodedFigureTalking { get; private set; }
+    [field: SerializeField] public EventReference sizzling { get; private set; }
+    [field: SerializeField] public EventReference countdownTimerBoops { get; private set; }
+
 
 
 

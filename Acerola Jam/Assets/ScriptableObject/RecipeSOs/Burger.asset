@@ -16,5 +16,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 216014f2b84b0784c8a443f89e80bcaf, type: 2}
   - {fileID: 11400000, guid: 9310af2828d3a8e42a6c834a4a85b545, type: 2}
   - {fileID: 11400000, guid: b8f8b47ea5967f1459d44ed56b17d8b2, type: 2}
-  recipeName: Burger
+  recipeName: Plain Burger
   cost: 5

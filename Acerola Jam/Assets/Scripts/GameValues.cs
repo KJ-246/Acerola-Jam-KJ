@@ -32,14 +32,14 @@ public class GameValues : MonoBehaviour
 
     public int currentMoney = 0;
     public int goalMoney = 35;
-    private bool giveSurplusMoney;
-    public int surplusMoney = 0;
+    private bool giveExtraTime;
+    public int extraTime = 0;
     private int payout = 0;
     public TextMeshProUGUI moneyEarnedText;
     public TextMeshProUGUI goalMoneyText;
-    public TextMeshProUGUI SurplusMoneyText;
     public GameObject Shop;
     public GameObject mainUI;
+    private bool dayOverFadeOut;
 
     [Header("Upgrades")]
     private bool boughtMoreStorage = false;
@@ -54,6 +54,7 @@ public class GameValues : MonoBehaviour
     public bool stopSpawning = false;
 
     public Animator viewFade;
+    public Animator dayOverFadeOutAnimator;
     public bool stopFade;
     private GameObject gameObjectToSwitchTo;
     public GameObject stoveArea;
@@ -80,7 +81,7 @@ public class GameValues : MonoBehaviour
     public float gamePlayingTimer;
     public float gamePlayingTimerMax = 120f;
 
-    private float gameOverTimer = 5f;
+    private float gameOverTimer = 10f;
     public float gameOverTimerMax = 5f;
 
     //AUDIO STUFF
@@ -98,14 +99,14 @@ public class GameValues : MonoBehaviour
     {
         music = AudioManager.instance.CreateInstance(FmodEvents.instance.music);
 
-        giveSurplusMoney = true;
+        giveExtraTime = true;
         boughtMoreStorage = false;
         moreStorageObjects.SetActive(false);
         //SurplusMoneyText.enabled = false;
         Shop.SetActive(false);
         mainUI.SetActive(true);
 
-        DayNum = 1;
+        //DayNum = 1;
 
         goalMoneyText.text = ("Goal: $ " + goalMoney);
 
@@ -140,9 +141,8 @@ public class GameValues : MonoBehaviour
         switch (state) {
             case State.WaitingToStart:
                 //mainUI.SetActive(true);
+                EnableInteractions();
                 stopSpawning = false;
-                Shop.SetActive(false);
-                SurplusMoneyText.enabled = false;
                 waitingToStartTimer -= Time.deltaTime;
                 goalMoneyText.text = ("Goal: $ " + goalMoney);
                 if (waitingToStartTimer < 0f) {
@@ -168,15 +168,19 @@ public class GameValues : MonoBehaviour
                 }
                 break;
             case State.DayOver:
-                //DisableInteractions();
+                DisableInteractions();
+                SwitchViewsTest(Areas[0]);
                 gameOverTimer -= Time.deltaTime;
                 stopSpawning = true;
-                if (DayNum == 1) {
-                    SurplusMoney();
+                if (currentMoney >= goalMoney || DayNum == 1) {
                     state = State.Intro;
                     OnStateChanged?.Invoke(this, EventArgs.Empty);
+                    giveExtraTime = true;
+                    gamePlayingTimerMax = 120;
+                    GiveExtraTime();
+                    gamePlayingTimerMax += extraTime;
+                    extraTime = 0;
                 }
-                //DayNum++;
                 if (gameOverTimer < 0f)
                 {
                     
@@ -185,17 +189,6 @@ public class GameValues : MonoBehaviour
                     {
                         
                         state = State.GameOver;
-                        OnStateChanged?.Invoke(this, EventArgs.Empty);
-                    }
-                    else {
-                        SurplusMoney();
-                        Debug.Log("You Lived");
-                        DayNum++;
-                        ResetTimers();
-                        state = State.WaitingToStart;
-                        currentMoney = 0;
-                        moneyEarnedText.text = "Current Money: $" + currentMoney;
-                        goalMoneyText.text = ("Goal: $ " + goalMoney);
                         OnStateChanged?.Invoke(this, EventArgs.Empty);
                     }
                 }
@@ -208,22 +201,15 @@ public class GameValues : MonoBehaviour
                     goalMoneyText.text = ("Goal: $ " + goalMoney);
                     currentMoney = 0;
                     moneyEarnedText.text = "Current Money: $" + currentMoney;
-                    //SurplusMoney();
 
                     //REMOVED FOR TESTING UNREMOVE THIS LATER
-
                     state = State.WaitingToStart;
                     OnStateChanged?.Invoke(this, EventArgs.Empty);
-                    //state = State.BuyingPhase;
-                    //OnStateChanged?.Invoke(this, EventArgs.Empty);
+                    introOver = false;
+                    
                 }
                 break;
             case State.BuyingPhase:
-                stopSpawning = true;
-                SurplusMoneyText.enabled = true;
-                Debug.Log("Buying Phase");
-                SurplusMoney();
-                Shop.SetActive(true);
                 break;
             case State.GameOver:
                 Debug.Log("You lost");
@@ -338,13 +324,11 @@ public class GameValues : MonoBehaviour
         
     }
 
-    public void SurplusMoney() {
-        if (giveSurplusMoney) {
-            surplusMoney = Mathf.Abs(currentMoney - goalMoney);
-            currentMoney = 0;
-            moneyEarnedText.text = "Current Money: $" + currentMoney;
-            SurplusMoneyText.text = "Surplus Money: $" + surplusMoney;
-            giveSurplusMoney = false;
+    public void GiveExtraTime() {
+        if (giveExtraTime && DayNum != 1) {
+            extraTime = currentMoney -= goalMoney;
+            Debug.Log(extraTime);
+            giveExtraTime = false;
         }
     }
 
@@ -364,6 +348,14 @@ public class GameValues : MonoBehaviour
     public void DisableInteractions() {
         foreach (Collider2D collider in AreaColliders) {
             collider.enabled = false;
+        }
+    }
+
+    public void EnableInteractions()
+    {
+        foreach (Collider2D collider in AreaColliders)
+        {
+            collider.enabled = true;
         }
     }
 
@@ -397,17 +389,6 @@ public class GameValues : MonoBehaviour
         countdownToStartTimer = countdownToStartTimerMax;
         gameOverTimer = gameOverTimerMax;
         stopSpawning = false;
-    }
-
-    //UPGRADES
-
-    public void StorageUpgrade(int cost) {
-        if (!boughtMoreStorage) {
-            moreStorageObjects.SetActive(true);
-            surplusMoney -= cost;
-            SurplusMoneyText.text = "Surplus Money: $" + surplusMoney;
-        }
-        boughtMoreStorage = true;
     }
 
     public void CloseShop() {

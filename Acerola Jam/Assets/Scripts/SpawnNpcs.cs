@@ -10,6 +10,8 @@ public class SpawnNpcs : MonoBehaviour
     public List<GameObject> npcsDay2;
     public List<GameObject> npcsDay3;
     public List<GameObject> npcsDay4;
+    public List<GameObject> npcsDay5;
+
     private List<GameObject> currentNpcs;
 
  
@@ -47,6 +49,9 @@ public class SpawnNpcs : MonoBehaviour
                 break;
             case 4:
                 currentNpcs = npcsDay4;
+                break;
+            case 5:
+                currentNpcs = npcsDay5;
                 break;
         }
     }

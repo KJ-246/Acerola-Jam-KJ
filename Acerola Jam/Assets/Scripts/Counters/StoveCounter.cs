@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMOD.Studio;
 
 public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
 {
@@ -21,6 +22,8 @@ public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
 
 
     public Transform counterPoint;
+    public ParticleSystem fryingParticles;
+    private EventInstance sizzling;
     private KitchenObj kitchenObject;
     private GameObject parent;
 
@@ -34,11 +37,19 @@ public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
 
     private void Start()
     {
+        sizzling = AudioManager.instance.CreateInstance(FmodEvents.instance.sizzling);
+
         state = State.Idle;
     }
 
     private void Update()
     {
+        UpdateSound();
+
+        if (!HasKitchenObj()) {
+            fryingParticles.Stop();
+        }
+
         if (HasKitchenObj())
         {
             switch (state) {
@@ -46,7 +57,6 @@ public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
                     break;
                 case State.Frying:
                     fryingTimer += Time.deltaTime;
-
                     OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
                     {
                         progressNormalized = fryingTimer / fryingRecipeSO.fryingTimerMax
@@ -65,6 +75,7 @@ public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
                     }
                     break;
                 case State.Fried:
+                    //fryingParticles.SetActive(true);
                     burntTimer += Time.deltaTime;
 
                     OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
@@ -103,6 +114,7 @@ public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
             {
                 if (hasRecipeWithInput(customCursor.GetKitchenObj().GetKitchenObjectSO()))
                 {
+                    fryingParticles.Play();
                     //Carrying something that can be FRIED!!
                     AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
                     customCursor.GetKitchenObj().SetKitchenObjectParent(this);
@@ -199,6 +211,24 @@ public class StoveCounter : MonoBehaviour, IKitchenObjectParent, IHasProgress
             }
         }
         return null;
+    }
+
+    private void UpdateSound()
+    {
+        if (HasKitchenObj())
+        {
+            PLAYBACK_STATE playbackState;
+            sizzling.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                sizzling.start();
+            }
+        }
+        else
+        {
+            sizzling.stop(STOP_MODE.ALLOWFADEOUT);
+        }
+
     }
 
     public Transform GetKitchenObjectFollowTransform()

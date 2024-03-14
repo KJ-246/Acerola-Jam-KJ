@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class MainMenue : MonoBehaviour
 {
-    public void LoadScene() {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(2);
+    public void LoadSceneMainScene() {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+    }
+
+    public void LoadSceneMainMenue()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }

@@ -18,8 +18,17 @@ public class PauseMenue : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(pauseButton)) {
+        if (Input.GetKeyDown(pauseButton))
+        {
             PauseMenueEnabler();
+        }
+
+        if (isPaused)
+        {
+            Time.timeScale = 0;
+        }
+        else {
+            Time.timeScale = 1;
         }
     }
 
@@ -37,6 +46,6 @@ public class PauseMenue : MonoBehaviour
     }
 
     public void ExitToTitle() {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }
