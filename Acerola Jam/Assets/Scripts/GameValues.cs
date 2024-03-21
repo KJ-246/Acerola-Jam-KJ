@@ -24,7 +24,6 @@ public class GameValues : MonoBehaviour
 
     [Header("Areas")]
     public List<GameObject> Areas;
-    public List<GameObject> pages;
     public List<Collider2D> AreaColliders;
 
 
@@ -37,19 +36,11 @@ public class GameValues : MonoBehaviour
     private int payout = 0;
     public TextMeshProUGUI moneyEarnedText;
     public TextMeshProUGUI goalMoneyText;
-    public GameObject Shop;
     public GameObject mainUI;
     private bool dayOverFadeOut;
 
-    [Header("Upgrades")]
-    private bool boughtMoreStorage = false;
-    public GameObject moreStorageObjects;
-
-
 
     [Header("Day Cycle")]
-    //public float dayTimer;
-    //public float dayTimerMax = 120f;
     public int DayNum = 1;
     public bool stopSpawning = false;
 
@@ -100,10 +91,6 @@ public class GameValues : MonoBehaviour
         music = AudioManager.instance.CreateInstance(FmodEvents.instance.music);
 
         giveExtraTime = true;
-        boughtMoreStorage = false;
-        moreStorageObjects.SetActive(false);
-        //SurplusMoneyText.enabled = false;
-        Shop.SetActive(false);
         mainUI.SetActive(true);
 
         //DayNum = 1;
@@ -195,7 +182,6 @@ public class GameValues : MonoBehaviour
                 break;
             case State.Intro:
                 if (introOver) { 
-                    Debug.Log("You Lived");
                     DayNum++;
                     ResetTimers();
                     goalMoneyText.text = ("Goal: $ " + goalMoney);
@@ -212,7 +198,6 @@ public class GameValues : MonoBehaviour
             case State.BuyingPhase:
                 break;
             case State.GameOver:
-                Debug.Log("You lost");
                 break;
         }
 
@@ -244,8 +229,6 @@ public class GameValues : MonoBehaviour
                 stopFade = false;
             }
         }
-
-        //Debug.Log(state);
     }
 
     public bool isGamePlaying() {
@@ -327,21 +310,7 @@ public class GameValues : MonoBehaviour
     public void GiveExtraTime() {
         if (giveExtraTime && DayNum != 1) {
             extraTime = currentMoney -= goalMoney;
-            Debug.Log(extraTime);
             giveExtraTime = false;
-        }
-    }
-
-    public void SwitchTabs(GameObject pageToSwitchTo)
-    {
-        foreach (GameObject _pages in pages)
-        {
-            if (_pages == pageToSwitchTo)
-            {
-                pageToSwitchTo.SetActive(true);
-                continue;
-            }
-            _pages.SetActive(false);
         }
     }
 
@@ -389,13 +358,6 @@ public class GameValues : MonoBehaviour
         countdownToStartTimer = countdownToStartTimerMax;
         gameOverTimer = gameOverTimerMax;
         stopSpawning = false;
-    }
-
-    public void CloseShop() {
-        ResetTimers();
-        state = State.WaitingToStart;
-        goalMoneyText.text = ("Goal: $ " + goalMoney);
-        OnStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void UpdateSound() {

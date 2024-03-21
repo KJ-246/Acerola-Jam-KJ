@@ -25,6 +25,7 @@ public class FmodEvents : MonoBehaviour
 
     [field: Header("Music Sfx")]
     [field: SerializeField] public EventReference music { get; private set; }
+    [field: SerializeField] public EventReference mainMenueMusic { get; private set; }
 
 
 

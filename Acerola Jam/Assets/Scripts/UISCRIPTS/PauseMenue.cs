@@ -45,7 +45,13 @@ public class PauseMenue : MonoBehaviour
         }
     }
 
+    public void PlayPopSound()
+    {
+        AudioManager.instance.PlayOneShot(FmodEvents.instance.popSfx);
+    }
+
     public void ExitToTitle() {
+        isPaused = false;
         UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }
